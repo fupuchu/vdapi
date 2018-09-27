@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(morgan("tiny"));
 
 // Connect to Mongodb
-const db = require("./config/keys").mongoURI || process.env.mongoURI;
+const db = require("./config/keys").mongoURI || process.env.URI;
 
 mongoose
   .connect(
