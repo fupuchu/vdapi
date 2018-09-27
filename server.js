@@ -36,7 +36,7 @@ const Groot = require("./models/Groot");
 // Testing Route
 app.get("/", (req, res) => {
   res.status(200).json({
-    key: "value"
+    message: "it works!"
   });
 });
 
@@ -44,12 +44,10 @@ app.get("/", (req, res) => {
 // Retrieve information using req.params
 // Returns an object with the relavant key pair
 app.get("/object/:mykey", (req, res) => {
-  console.log(req.query);
-  if (req.query) {
-    Groot.findOne({
-      timestamp: req.query.timestamp
-    });
+  if (req.query.timestamp) {
+    console.log("Query detected", req.query);
   } else {
+    console.log("Invalid or No Query found displaying values instead");
     Groot.findOne({
       key: req.params.mykey
     })
@@ -63,7 +61,7 @@ app.get("/object/:mykey", (req, res) => {
           res.json(output);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => res.json(err));
   }
 });
 
@@ -95,12 +93,10 @@ app.post("/object", (req, res) => {
   });
 });
 
-// GET ROUTE
-// Get by key and timestamp
-
-app.get("/object", (req, res) => {
-  console.log(req.query);
-});
+// Timestamp searching
+// Get previous result's key and values and store them in history(see models)
+// Then use collection.findOne({history: [{past:timestamp}]})
+// "Search" using the first few integers
 
 const port = process.env.PORT || 3000;
 
